@@ -2,12 +2,15 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { getDay, getMonth } from "../shared/utils/dateTime";
 import { Colors } from "../shared/constants/colors";
+import { WifiIcon } from "./WifiIcon";
+import { BatteryIcon } from "./BatteryIcon";
+import { KeyBoardIcon } from "./KeyBoardIcon";
 
 const ScreenBackground = styled.div`
     width: 100vw;
     height: 100vh;
 
-    background-image: url("https://i.pinimg.com/originals/08/c5/ec/08c5ec8fddd5fd3c965e773cad127e2b.jpg");
+    background-image: url("https://images.jawamotorcycles.com/medium/perak/perak-story-bg.jpg?da?v=1");
 `;
 
 const StyledDate = styled.span`
@@ -29,6 +32,26 @@ const StyledDateContainer = styled.div`
     column-gap: 5px;
 `;
 
+const StyledTopNav = styled.div`
+    margin-right: 20px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 5px;
+`;
+
+const StyledNavText = styled.span`
+    color: ${Colors.aliceBlue};
+    font-size: 15px;
+`;
+
+const StyledBatteryIcon = styled.div`
+    margin-left:10px;
+    margin-right:5px;
+`;
+
 const DateSection = ({dateTime}) => <StyledDateContainer>
     <StyledDate>
         {getDay(dateTime)}
@@ -46,6 +69,7 @@ const DateTimeSection = styled.div`
     flex-direction: column;
 
     align-items: center;
+    opacity: 0.7;
 `;
 
 export const LockScreen = () => {
@@ -60,6 +84,14 @@ export const LockScreen = () => {
     
     return (
         <ScreenBackground>
+            <StyledTopNav>
+                <StyledNavText>ABC - India</StyledNavText>
+                <KeyBoardIcon color={Colors.aliceBlue} size="18px" />
+                <StyledBatteryIcon>
+                    <BatteryIcon color={Colors.aliceBlue} size="23px" />
+                </StyledBatteryIcon>
+                <WifiIcon color={Colors.aliceBlue} size="26px" />
+            </StyledTopNav>
             <DateTimeSection>
                 <DateSection dateTime={dateTime} />
                 <StyledTime>
