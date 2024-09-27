@@ -6,11 +6,16 @@ import { WifiIcon } from "./WifiIcon";
 import { BatteryIcon } from "./BatteryIcon";
 import { KeyBoardIcon } from "./KeyBoardIcon";
 
-const ScreenBackground = styled.div`
+const StyledScreenBackground = styled.div`
     width: 100vw;
     height: 100vh;
 
     background-image: url("https://images.jawamotorcycles.com/medium/perak/perak-story-bg.jpg?da?v=1");
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 568px;
 `;
 
 const StyledDate = styled.span`
@@ -23,7 +28,7 @@ const StyledDate = styled.span`
 const StyledTime = styled.span`
     color: ${Colors.aliceBlue};
 
-    font-size: 100px;
+    font-size: 115px;
     font-weight: bold;
 `;
 
@@ -32,7 +37,7 @@ const StyledDateContainer = styled.div`
     column-gap: 5px;
 `;
 
-const StyledTopNav = styled.div`
+const StyledTopIconContainer = styled.div`
     margin-right: 20px;
     height: 30px;
 
@@ -42,7 +47,7 @@ const StyledTopNav = styled.div`
     column-gap: 5px;
 `;
 
-const StyledNavText = styled.span`
+const StyledLangText = styled.span`
     color: ${Colors.aliceBlue};
     font-size: 15px;
 `;
@@ -52,25 +57,96 @@ const StyledBatteryIcon = styled.div`
     margin-right:5px;
 `;
 
-const DateSection = ({dateTime}) => <StyledDateContainer>
-    <StyledDate>
-        {getDay(dateTime)}
-    </StyledDate>
-    <StyledDate>
-        {dateTime.getDate()}
-    </StyledDate>
-    <StyledDate>
-        {getMonth(dateTime)}
-    </StyledDate>   
-</StyledDateContainer>
-
-const DateTimeSection = styled.div`
+const StyledDateTimeSection = styled.div`
     display: flex;
     flex-direction: column;
 
     align-items: center;
     opacity: 0.7;
 `;
+
+const StyledHintText = styled.span`
+    color: ${Colors.aliceBlue};
+    opacity: 0.7;
+    font-size: 13px;
+`;
+
+const StyledProfileIcon = styled.div`
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXFheFAPTNaKkOqKHtRwnV5QvjFRES_WD-kQ&s");
+    background-size: cover;
+    
+    width: 50px;
+    height:50px;
+    border-radius: 50%;
+`;
+
+const StyledName = styled.div`
+    color: ${Colors.white};
+    font-weight: 600;
+`;
+
+const StyledBottomContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+`;
+
+const StyledTopContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+`;
+
+const DateSection = ({ dateTime }) => (
+    <StyledDateContainer>
+        <StyledDate>
+            {getDay(dateTime)}
+        </StyledDate>
+        <StyledDate>
+            {dateTime.getDate()}
+        </StyledDate>
+        <StyledDate>
+            {getMonth(dateTime)}
+        </StyledDate>   
+    </StyledDateContainer>
+)
+
+const TopRightIconsSection = () => (
+    <StyledTopIconContainer>
+        <StyledLangText>ABC - India</StyledLangText>
+        <KeyBoardIcon color={Colors.aliceBlue} size="18px" />
+        <StyledBatteryIcon>
+            <BatteryIcon color={Colors.aliceBlue} size="23px" />
+        </StyledBatteryIcon>
+        <WifiIcon color={Colors.aliceBlue} size="26px" />
+    </StyledTopIconContainer>
+);
+
+const BottomSection = () => (
+    <StyledBottomContainer>
+        <StyledProfileIcon />
+        <StyledName>
+            Reshmi R S
+        </StyledName>
+        <StyledHintText>
+            Touch ID or Enter Password
+        </StyledHintText>
+    </StyledBottomContainer>
+);
+
+const TopSection = ({dateTime}) => (
+    <StyledTopContainer>
+        <TopRightIconsSection />
+        <StyledDateTimeSection>
+            <DateSection dateTime={dateTime} />
+            <StyledTime>
+                {dateTime.toLocaleTimeString().slice(0,5)}
+            </StyledTime>
+        </StyledDateTimeSection>
+    </StyledTopContainer>
+)
 
 export const LockScreen = () => {
     const [dateTime, setDateTime] = useState(new Date());
@@ -83,21 +159,9 @@ export const LockScreen = () => {
     }, [])
     
     return (
-        <ScreenBackground>
-            <StyledTopNav>
-                <StyledNavText>ABC - India</StyledNavText>
-                <KeyBoardIcon color={Colors.aliceBlue} size="18px" />
-                <StyledBatteryIcon>
-                    <BatteryIcon color={Colors.aliceBlue} size="23px" />
-                </StyledBatteryIcon>
-                <WifiIcon color={Colors.aliceBlue} size="26px" />
-            </StyledTopNav>
-            <DateTimeSection>
-                <DateSection dateTime={dateTime} />
-                <StyledTime>
-                    {dateTime.toLocaleTimeString().slice(0,5)}
-                </StyledTime>
-            </DateTimeSection>
-        </ScreenBackground>
+        <StyledScreenBackground>
+            <TopSection dateTime={dateTime} />
+            <BottomSection />
+        </StyledScreenBackground>
     );
 }
