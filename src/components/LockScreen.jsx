@@ -16,7 +16,7 @@ const StyledScreenBackground = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 568px;
+    row-gap: 60vh;
 `;
 
 const StyledDate = styled.span`
