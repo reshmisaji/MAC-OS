@@ -11,6 +11,7 @@ const StyledScreenBackground = styled.div`
     height: 100vh;
 
     background-image: url("https://images.jawamotorcycles.com/medium/perak/perak-story-bg.jpg?da?v=1");
+    background-size: cover;
 
     display: flex;
     flex-direction: column;
