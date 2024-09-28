@@ -158,7 +158,7 @@ const TopRightIconsSection = () => (
     </StyledTopIconContainer>
 );
 
-const BottomSection = ({name, setName}) => {
+const BottomSection = ({name, setName, setIsLoggedIn}) => {
     const [userName, setUserName] = useState('');
     const [showName, setShowName] = useState(true);
 
@@ -170,7 +170,7 @@ const BottomSection = ({name, setName}) => {
 
     const handleKeyDown = ({ code }) => code === appConstants.ENTER && handleContinue();
 
-    const handleLogin = () => console.log("Logged In")
+    const handleLogin = () => setIsLoggedIn(true);
 
     const renderInput = () => {
         if (!name)
@@ -199,9 +199,9 @@ const BottomSection = ({name, setName}) => {
            {name}
             </StyledName>) : renderInput()
         } 
-        <StyledHintText>
+        {name && <StyledHintText>
             {appConstants.LOCK_SCREEN_HINT}
-        </StyledHintText>
+        </StyledHintText>}
     </StyledBottomContainer>
 );}
 
@@ -217,7 +217,7 @@ const TopSection = ({dateTime}) => (
     </StyledTopContainer>
 )
 
-export const LockScreen = () => {
+export const LockScreen = ({setIsLoggedIn}) => {
     const [dateTime, setDateTime] = useState(new Date());
     const [name, setName] = useState('');
     
@@ -231,7 +231,7 @@ export const LockScreen = () => {
     return (
         <StyledScreenBackground>
             <TopSection dateTime={dateTime} />
-            <BottomSection name={name} setName={setName} />
+            <BottomSection name={name} setName={setName} setIsLoggedIn={setIsLoggedIn} />
         </StyledScreenBackground>
     );
 }
