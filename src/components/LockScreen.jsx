@@ -5,6 +5,8 @@ import { Colors } from "../shared/constants/colors";
 import { WifiIcon } from "./WifiIcon";
 import { BatteryIcon } from "./BatteryIcon";
 import { KeyBoardIcon } from "./KeyBoardIcon";
+import { appConstants } from "../shared/constants/appConstants";
+import { CircledArrowRight } from "./icons/CircledArrowRight";
 
 const StyledScreenBackground = styled.div`
     width: 100vw;
@@ -67,9 +69,9 @@ const StyledDateTimeSection = styled.div`
 `;
 
 const StyledHintText = styled.span`
-    color: ${Colors.aliceBlue};
-    opacity: 0.7;
+    color: ${Colors.lightGrey};
     font-size: 13px;
+    font-weight: 600;
 `;
 
 const StyledProfileIcon = styled.div`
@@ -100,6 +102,37 @@ const StyledTopContainer = styled.div`
     row-gap: 15px;
 `;
 
+const StyledInputContainer = styled.div`
+    position: relative  ;
+`;
+
+const StyledInput = styled.input`
+    width: 150px;
+    height: 25px;
+    border-radius: 20px;
+    border:0px;
+    font-weight: 700;
+    padding-left: 10px;
+
+    background: ${Colors.mediumGrey};
+    caret-color: ${Colors.aliceBlue};
+    color: ${Colors.darkGray};
+
+    &::placeholder{
+        color: ${Colors.lightGrey};
+    }
+
+    &:focus-visible{
+        outline: none;
+    }
+`;
+
+const StyledRightArrow = styled.span`
+    width: 25px;
+    position: absolute;
+    right: 0;
+`;
+
 const DateSection = ({ dateTime }) => (
     <StyledDateContainer>
         <StyledDate>
@@ -116,7 +149,7 @@ const DateSection = ({ dateTime }) => (
 
 const TopRightIconsSection = () => (
     <StyledTopIconContainer>
-        <StyledLangText>ABC - India</StyledLangText>
+        <StyledLangText>{appConstants.LANGUAGE}</StyledLangText>
         <KeyBoardIcon color={Colors.aliceBlue} size="18px" />
         <StyledBatteryIcon>
             <BatteryIcon color={Colors.aliceBlue} size="23px" />
@@ -125,17 +158,52 @@ const TopRightIconsSection = () => (
     </StyledTopIconContainer>
 );
 
-const BottomSection = () => (
+const BottomSection = ({name, setName}) => {
+    const [userName, setUserName] = useState('');
+    const [showName, setShowName] = useState(true);
+
+    const handleContinue = () => {
+        const updatedName = userName;
+        setName(updatedName);
+        setUserName('');
+    }
+
+    const handleKeyDown = ({ code }) => code === appConstants.ENTER && handleContinue();
+
+    const handleLogin = () => console.log("Logged In")
+
+    const renderInput = () => {
+        if (!name)
+            return (
+                <StyledInputContainer>
+                    <StyledInput placeholder="Enter Name" value={userName} onChange={(e) => setUserName(e.target.value)} onKeyDown={handleKeyDown} />
+                    {userName && <StyledRightArrow onClick={handleContinue}>
+                        <CircledArrowRight size="25px" color={Colors.darkGray} />
+                    </StyledRightArrow>}
+                </StyledInputContainer>);
+        
+        return (
+            <StyledInputContainer>
+                <StyledInput placeholder="Enter Password" type="password" onKeyDown={({code})=> code === appConstants.ENTER && handleLogin() } />
+                {<StyledRightArrow onClick={handleLogin}>
+                    <CircledArrowRight size="25px" color={Colors.darkGray} />
+                </StyledRightArrow>}
+            </StyledInputContainer>
+        )
+    }
+
+    return (
     <StyledBottomContainer>
         <StyledProfileIcon />
-        <StyledName>
-            Reshmi R S
-        </StyledName>
+        {name && showName? (<StyledName onClick={()=>setShowName(false)}>
+           {name}
+            </StyledName>) : renderInput()
+        } 
         <StyledHintText>
-            Touch ID or Enter Password
+            {appConstants.LOCK_SCREEN_HINT}
         </StyledHintText>
     </StyledBottomContainer>
-);
+);}
 
 const TopSection = ({dateTime}) => (
     <StyledTopContainer>
@@ -151,6 +219,7 @@ const TopSection = ({dateTime}) => (
 
 export const LockScreen = () => {
     const [dateTime, setDateTime] = useState(new Date());
+    const [name, setName] = useState('');
     
     useEffect(() => {
         const interval = setInterval(() => {
@@ -162,7 +231,7 @@ export const LockScreen = () => {
     return (
         <StyledScreenBackground>
             <TopSection dateTime={dateTime} />
-            <BottomSection />
+            <BottomSection name={name} setName={setName} />
         </StyledScreenBackground>
     );
 }
