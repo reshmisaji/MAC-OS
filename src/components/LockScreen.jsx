@@ -176,7 +176,13 @@ const BottomSection = ({name, setName, setIsLoggedIn}) => {
         if (!name)
             return (
                 <StyledInputContainer>
-                    <StyledInput placeholder="Enter Name" value={userName} onChange={(e) => setUserName(e.target.value)} onKeyDown={handleKeyDown} />
+                    <StyledInput
+                        autoFocus
+                        onChange={(e) => setUserName(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Enter Name"
+                        value={userName}
+                    />
                     {userName && <StyledRightArrow onClick={handleContinue}>
                         <CircledArrowRight size="25px" color={Colors.darkGray} />
                     </StyledRightArrow>}
@@ -184,7 +190,12 @@ const BottomSection = ({name, setName, setIsLoggedIn}) => {
         
         return (
             <StyledInputContainer>
-                <StyledInput placeholder="Enter Password" type="password" onKeyDown={({code})=> code === appConstants.ENTER && handleLogin() } />
+                <StyledInput
+                    autoFocus
+                    onKeyDown={({ code }) => code === appConstants.ENTER && handleLogin()}
+                    placeholder="Enter Password" 
+                    type="password"
+                />
                 {<StyledRightArrow onClick={handleLogin}>
                     <CircledArrowRight size="25px" color={Colors.darkGray} />
                 </StyledRightArrow>}
